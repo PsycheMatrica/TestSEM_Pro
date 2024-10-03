@@ -236,9 +236,8 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
 
             C02_Spec=B0_Full;
             C02_Spec((P_o1+1):P,(P_o1+1):P)=false;
-            B0_Spec =B0_Spec=B0_Full;
+             B0_Spec=B0_Full;
              B0_Spec((P_o1+1):P,1:P_o1)=false;            
-            
             
             Nw1=sum(sum(double(W01),1),2);
             Nw2=sum(sum(double(W02),1),2);
@@ -273,8 +272,8 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
             vec_W1_true = Para.o1.W(W01);
             vec_W2_true = Para.o2.W(W02);
             vec_W_true=[vec_W1_true;vec_W2_true];            
-            vec_C1_true = Para.o1.C(C01); ... recalibrated
-            vec_C2_true = Para.o2.C(C02); ... recalibrated
+            vec_C1_true = Para.o1.C(C01); 
+            vec_C2_true = Para.o2.C(C02); 
             vec_C_true=[vec_C1_true;vec_C2_true];      
             vec_B_true = Para.o2.B(B0);
 
@@ -338,7 +337,7 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
             end
         end
     else 
-        error("Currently, the SEM model with simple structure or the one with higher-order constructs is supported."); 
+        error("Currently, the SEM model with simple structure or higher-order constructs is supported."); 
     end
     if Flag_SaveEst; Results.Storage_Est = Storage_Est; end
 
