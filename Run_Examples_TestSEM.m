@@ -8,7 +8,6 @@
 %    This code aims to illustrate how to use TestSEM_Pro package to       %
 %      test the performance of various SEM estimators.                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Example 1. Cho and Choi's (2020) simulation study                      %
 %   - DGP - Basic SEM model with nomological component                    %
@@ -148,18 +147,21 @@ DGP
 DGP.Measurement
 DGP.Measurement.o1
 P_o1 = 12; % # of factors
-DGP.Measurement.o1.list_ConstructType = zeros(1,P_o1); 
+list_cType_o1= zeros(1,P_o1); 
+DGP.Measurement.o1.list_ConstructType = list_cType_o1;
 DGP.Measurement.o1.Cp=[.6 .7 .8];
-P_o2 = 4;
+
 DGP.Measurement.o2
-DGP.Measurement.o2.list_ConstructType = ones(1,P_o1); 
+P_o2 = 4;
+list_cType_o2= ones(1,P_o2); 
+DGP.Measurement.o2.list_ConstructType = list_cType_o2; 
 DGP.Measurement.o2.Sig_Zp=[1 .12248 .2603
                           .12248 1 .3369
                           .2603 .3369 1]; % covariance matrix for an indicator block
 DGP.Structural
-DGP.Structural.Bx = [.7  .5 -.3];
+DGP.Structural.Bx = [.7 -.5 -.3];
 [Px_o2,Py_o2]=size(DGP.Structural.Bx);
-DGP.Structural.By = [ 0 -.3  .5;
+DGP.Structural.By = [ 0  .3  .5;
                       0  0  -.7;
                       0  0    0];
 DGP.Structural.Sig_CVx = 1;
@@ -173,6 +175,8 @@ DGP.Structural.Sig_CVx = 1;
 % Note2: HigherOrderIGSCA_Prime package is required to run this code.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 addpath('C:\Users\cheol\Dropbox\Software_Development\SeCA_Pro\GSCA_Prime\HigherOrderIGSCA_Prime\')
+addpath('C:\Users\cheol\Dropbox\Software_Development\TestSEM_Pro\DGP-SEM_Pro')
+
 help igsca_ho
 
 Jp_o1=size(DGP.Measurement.o1.Cp,2); J_o1 = Jp_o1*P_o1;
@@ -184,7 +188,6 @@ Jp_o2 = 3;
 W0_o2 = blkdiag(ones(Jp_o2,1),ones(Jp_o2,1),ones(Jp_o2,1),ones(Jp_o2,1))*99;
 C0_o2 = W0_o2';
 
-C0_o2
 B0_o2 = [0 1 1 1;
          0 0 1 1;
          0 0 0 1;
@@ -192,15 +195,13 @@ B0_o2 = [0 1 1 1;
 P=P_o1+P_o2;
 B0 = [zeros(P_o1,P);[C0_o2,B0_o2]];
 
-dimtype1=ones(1,P_o1); 
-dimtype2=zeros(1,P_o2); 
 
 N_Boot=0;
 Max_iter=500;
 Min_limit=1e-4;
 
 Estimators.list_Function = {@igsca_ho};
-Estimators.list_FunctionInput = {{W0_o1,W0_o2,C0_o1,B0,dimtype1,dimtype2,N_Boot,Max_iter,Min_limit}};
+Estimators.list_FunctionInput = {{W0_o1,W0_o2,C0_o1,B0,list_cType_o1,list_cType_o2,N_Boot,Max_iter,Min_limit}};
 
 % Step 2-3. Specify simulation options in SimulationOption.        
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -208,6 +209,8 @@ SimulationOption
 SimulationOption.list_N=[50 100 250 500 1000];
 SimulationOption.N_rep =500;
 SimulationOption.DistType=1;
+
+SimulationOption.Flag_Parallel=true;
 SimulationOption.Criterion.ParameterRecovery=true;
 SimulationOption.Criterion.ConvergenceRate=true;
 %SimulationOption.Criterion.SelectionRate=false;
@@ -233,3 +236,4 @@ List_Names.Estimator=["IGSCA"];
 List_Names.Para=["W","C","B"];
 List_Names.N=SimulationOption.list_N;
 Summary_TestSEM(Results,List_Names);
+save('Results_TestSEM.mat')

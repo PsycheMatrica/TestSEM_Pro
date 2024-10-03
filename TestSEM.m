@@ -181,8 +181,8 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
         Sig_Ezp_o1 = DGP.Measurement.o1.Sig_Ezp;   
 
         P_o1= length(list_ConstructType_o1);   
-        Jp_o1 = size(Sig_Zp_o1,1); if Jp_o1==0; Jp_o1=size(Cp_o1,2); end 
-        J_o1=Jp_o1*P_o1; 
+        %Jp_o1 = size(Sig_Zp_o1,1); if Jp_o1==0; Jp_o1=size(Cp_o1,2); end 
+        % J_o1=Jp_o1*P_o1; 
  
         list_ConstructType_o2 = DGP.Measurement.o2.list_ConstructType;
         Sig_Zp_o2 = DGP.Measurement.o2.Sig_Zp;     
@@ -197,21 +197,24 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
         P=P_o1+P_o2;        
 
         if isfield(DGP,'Structural');
-            Info_model=struct('Bx',DGP.Structural.Bx,'By',DGP.Structural.By,'J',J,'list_Jp',ones(1,P_o2)*Jp_o2,'P',P_o2);
+            Bx=DGP.Structural.Bx;
+            By=DGP.Structural.By;
             Array_Sig_CVx=DGP.Structural.Sig_CVx;      
             N_ExpFac1 = size(Array_Sig_CVx,3);
         else
-            Info_model=struct('Bx',zeros(P_o2,P_o2),'By',zeros(0,0),'J',J_o2,'list_Jp',ones(1,P_o2)*Jp_o2,'P',P_o2);
+            Bx=zeros(P_o2,P_o2);
+            By=zeros(0,0);
             Array_Sig_CVx=eye(P_o2,P_o2);
             N_ExpFac1 = 1;
         end
 
         SimulationOption.N=sum(SimulationOption.list_N);
-        SimulationOption.GenType=1;
         list_N=SimulationOption.list_N;
         N_N=size(list_N,2);
         N_rep=SimulationOption.N_rep;
-
+        Total_N=sum(SimulationOption.list_N);
+        DistType=SimulationOption.DistType;
+        
         list_Function = Estimator.list_Function;
         list_FunctionInput = Estimator.list_FunctionInput;    
         N_estimator=size(list_Function,2);
@@ -237,7 +240,10 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
             C02_Spec=B0_Full;
             C02_Spec((P_o1+1):P,(P_o1+1):P)=false;
              B0_Spec=B0_Full;
-             B0_Spec((P_o1+1):P,1:P_o1)=false;            
+             B0_Spec((P_o1+1):P,1:P_o1)=false;  
+
+            W01(:,list_ConstructType_o1==0)=false;
+            W02(:,list_ConstructType_o2==0)=false;
             
             Nw1=sum(sum(double(W01),1),2);
             Nw2=sum(sum(double(W02),1),2);
@@ -263,14 +269,14 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
         end
         %% Run Simulation
         for i4=1:N_ExpFac1 
-            Info_model.Sig_CVx = Array_Sig_CVx(:,:,i4);
             [Para,Dataset,~] = DGP_HigherOrderSEM(list_ConstructType_o1,Sig_Zp_o1,Sig_Ezp_o1,Cp_o1,Wp_o1,...
                                                   list_ConstructType_o2,Sig_Zp_o2,Sig_Ezp_o2,Cp_o2,Wp_o2,...
-                                                  Sig_CVx,Bx,By,...
-                                                  N,N_rep,DistType);
+                                                  Array_Sig_CVx(:,:,i4),Bx,By,...
+                                                  Total_N,N_rep,DistType);
 
             vec_W1_true = Para.o1.W(W01);
             vec_W2_true = Para.o2.W(W02);
+
             vec_W_true=[vec_W1_true;vec_W2_true];            
             vec_C1_true = Para.o1.C(C01); 
             vec_C2_true = Para.o2.C(C02); 
