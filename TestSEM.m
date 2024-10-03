@@ -168,7 +168,7 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
                 if Flag_SafeBackup; save('Backup_TestSEM.mat'); end
             end
         end
-    elseif DGPTYPE==2
+    elseif DGP.DGPType==2
 %        [Para,Dataset,~] = DGP_HigherOrderSEM(list_ConstructType_o1,Sig_Zp_o1,Sig_Ezp_o1,Cp_o1,Wp_o1,...
 %            list_ConstructType_o2,Sig_Zp_o2,Sig_Ezp_o2,Cp_o2,Wp_o2,...
 %            Sig_CVx,Bx,By,...
@@ -347,15 +347,12 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
     if Flag_PR      
         Results.Storage_PR_ind = Storage_PR_ind;
         Results.Table_PR_avg=Table_PR_avg;
+        Results.loc_w=loc_w;
+        Results.loc_c=loc_c;
+        Results.loc_b=loc_b;
     end
     if Flag_CR
         Results.Storage_CR = Storage_CR;
         Results.Table_CR = Table_CR;
     end
-
-    if DGP.DGPTYPE==1
-        Results.loc_w=loc_w;
-        Results.loc_c=loc_c;
-        Results.loc_b=loc_b;
-    end 
 end
