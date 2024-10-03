@@ -39,15 +39,21 @@ function [DGP, Estimator, SimulationOption] = Initiate_TestSEM(varargin)
         N_estimator=varargin{2};
         if DGPType>2
             error(['Please enter the correct model number.',...
-                   ' Currently, the SEM model with simple structure is supported.'])
+                   ' Currently, the SEM model with simple structure or higher-order constructs is supported.'])
         end
     end
     Help_TestSEM(DGPType);
     fprintf('You can call the instruction by typing "Help_TestSEM(ModelType)".\n');
     if DGPType==1                
-        DGP = struct('DGPTYPE', DGPType, ...
+        DGP = struct('DGPType', DGPType, ...
                      'Measurement', struct('list_ConstructType', [], 'Sig_Zp', [], 'Sig_Ezp', [], 'Cp', [], 'Wp', []), ...
                      'Structural', struct('Bx', [], 'By', [], 'Sig_CVx', []));
+    elseif DGPType==2
+        DGP = struct('DGPType', DGPType, ...
+                     'Measurement',struct('o1',[],'o2',[]), ...
+                     'Structural', struct('Bx', [], 'By', [], 'Sig_CVx', []));
+        DGP.Measurement.o1=struct('list_ConstructType', [], 'Sig_Zp', [], 'Sig_Ezp', [], 'Cp', [], 'Wp', []);
+        DGP.Measurement.o2=struct('list_ConstructType', [], 'Sig_Zp', [], 'Sig_Ezp', [], 'Cp', [], 'Wp', []);                     
     end
     Estimator = struct();%struct('list_Function', , 'list_FunctionInput', cell(1,N_estimator));
     Estimator.list_Function=cell(1,N_estimator);

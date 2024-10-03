@@ -27,7 +27,7 @@ function Results = TestSEM(DGP,Estimator,SimulationOption)
 %      - Table_CR: a table containing the convergence rate of each        %
 %          estimator per condition                                        %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    if DGP.DGPTYPE==1
+    if DGP.DGPType==1
         list_ConstructType = DGP.Measurement.list_ConstructType;
         Sig_Zp = DGP.Measurement.Sig_Zp;     
         Wp_unstd = DGP.Measurement.Wp;     
