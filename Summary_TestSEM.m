@@ -1,5 +1,45 @@
 function Summarized_Results=Summary_TestSEM(Results,List_Names)
-    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Summary_TestSEM() - MATLAB function to summarize the output results of  %
+%                     TestSEM() and save the results to an external       %
+%                     Excel file.                                         %
+% Author: Gyeongcheol Cho                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Input arguments:                                                        %
+%   Results: A structure array containing the results of the Monte Carlo  %
+%      simulation study. The result tables vary depending on the          %
+%      evaluation criteria specified in SimulationOption. They may        %
+%      include, but are not limited to, the following:                    %
+%      - Storage_PR_ind: A 5D array containing parameter recovery         %
+%          statistics (Bias, SD, RMSE) for each estimator per condition.  %
+%      - Table_PR_avg: A table summarizing the parameter recovery         %
+%          statistics for each estimator across parameters of the same    %
+%          type per condition.                                            %
+%      - Table_CR: A table showing the convergence rate of each           %
+%          estimator per condition.                                       %
+%   List_Names: A structure array containing the names of the variables   %
+%      to be saved in the Excel file.                                     %
+%      - filename: A string representing the name of the Excel file.      %
+%      - ExpFactor: A 1x2 row vector where the first entry indicates the  %
+%        name of the experimental factor and the second entry indicates   %
+%        the sample size.                                                 %
+%      - PR_Eval: A 1x3 row vector where the first entry indicates the    %
+%        evaluation type (e.g., Bias, SD, RMSE).                          %
+%      - Para: A 1x3 row vector where the first entry indicates the name  %
+%        of the parameter (e.g., W, C, B).                                %
+%      - Level_Factor1: A 1xN_LevFac1 row vector where each entry (p)     %
+%        indicates the name of the pth level of the first experimental    %
+%        factor.                                                          %
+%      - N: A 1xN_N row vector where each entry (p) indicates the sample  %
+%        size for the pth condition.                                      %
+%      - Estimator: A 1xN_estimator row vector where each entry (p)       %
+%        indicates the name of the pth estimator.                         %
+% Output arguments:                                                       %
+%   Summarized_Results: A structure array containing tables with the      %
+%      average results of the Monte Carlo simulation study, organized by  %
+%      sample size and estimator.                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     N_LevFac1=size(Results.Storage_Est,1);
     N_N=size(Results.Storage_Est,2);
     N_estimator=size(Results.Storage_Est,4);
