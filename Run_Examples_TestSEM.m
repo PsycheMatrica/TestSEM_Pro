@@ -31,8 +31,8 @@
 help Initiate_TestSEM
 
 TypeDGP = 1;
-N_estimators = 2;
-[DGP, Estimators, SimulationOption] = Initiate_TestSEM(TypeDGP,N_estimators);
+N_estimator = 2;
+[DGP, Estimators, SimulationOption] = Initiate_TestSEM(TypeDGP,N_estimator);
 
 % Step 2-1. Specify the parameter values of DGP in DGP.     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -138,9 +138,9 @@ Summary_TestSEM(Results,List_Names);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 help Initiate_TestSEM
 
-TypeDGP = 2;
-N_estimators = 1;
-[DGP, Estimators, SimulationOption] = Initiate_TestSEM(TypeDGP,N_estimators);
+DGPType = 2;
+N_estimator = 1;
+[DGP, Estimators, SimulationOption] = Initiate_TestSEM(DGPType,N_estimator);
 
 % Step 2-1. Specify the parameter values of DGP in DGP.     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
