@@ -3,6 +3,7 @@
 **Author:** GyeongCheol Cho  
 **Repository:** https://github.com/PsycheMatrica/TestSEM_Pro
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15844368.svg)](https://doi.org/10.5281/zenodo.15844368)
 [![MATLAB R2023b](https://img.shields.io/badge/MATLAB-R2023b-blue)](https://www.mathworks.com/)  
 
 ## Description
@@ -11,7 +12,7 @@
 
 ## Features
 
-- Support for SEMs with both latent factors and composites  
+- Support for SEMs with both factors and components  
 - Assessment of parameter recovery and convergence rates  
 - Generation of comprehensive result summaries  
 
@@ -42,4 +43,4 @@
 
 If you use **TestSEM_Pro**, please cite:
 
-> Cho, G. (2025). *TestSEM_Pro: A MATLAB package for Monte Carlo evaluation of SEM estimators* [Computer software]. GitHub. https://github.com/PsycheMatrica/TestSEM_Pro
+> Cho, G. (2025). *TestSEM_Pro: A MATLAB package for Monte Carlo evaluation of SEM estimators* [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.15844368
